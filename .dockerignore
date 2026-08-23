@@ -1,0 +1,13 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+.git/
+.gitignore
+.env
+tests/
+.pytest_cache/
+.ruff_cache/
+celerybeat-schedule*
+README.md
+requirements-dev.txt
