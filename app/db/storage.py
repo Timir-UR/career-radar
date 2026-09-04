@@ -4,19 +4,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.models import Vacancy, Source
 from app.dedup.hashing import make_content_hash
-from app.schemas import vacancy
 from app.schemas.vacancy import NormalizeVacancy
 
-async def save_vacancy(session: AsyncSession, source_name: str, items: list[NormalizeVacancy]) -> int:
+async def save_vacancy(session: AsyncSession,items: list[NormalizeVacancy]) -> int:
     if not items:
         return 0
-    result = await session.execute(
-        select(Source).where(Source.name == source_name)
-    )
-    source = result.scalar_one_or_none()
-    if source is None:
-        raise ValueError(f"Источник {source_name!r} не найден в базе")
-
     unique: dict[str, dict] = {}
     for vitem in items:
         content_hash = make_content_hash(vitem)
@@ -34,5 +26,10 @@ async def save_vacancy(session: AsyncSession, source_name: str, items: list[Norm
     stmt = insert(Vacancy).values(list(unique.values())).on_conflict_do_nothing(index_elements=["content_hash"]).returning(Vacancy.id)
     result = await session.execute(stmt)
     saved = len(result.all())
-    await session.commit()
     return saved
+
+async def get_source(session: AsyncSession, source_name: str) -> Source | None:
+    result = await session.execute(
+        select(Source).where(Source.name == source_name)
+    )
+    return result.scalar_one_or_none()
