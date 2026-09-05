@@ -6,7 +6,7 @@ from app.db.models import Vacancy, Source
 from app.dedup.hashing import make_content_hash
 from app.schemas.vacancy import NormalizeVacancy
 
-async def save_vacancy(session: AsyncSession,items: list[NormalizeVacancy]) -> int:
+async def save_vacancy(session: AsyncSession, source: Source, items: list[NormalizeVacancy]) -> int:
     if not items:
         return 0
     unique: dict[str, dict] = {}
