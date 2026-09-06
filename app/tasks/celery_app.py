@@ -11,7 +11,7 @@ celery_app = Celery(
 celery_app.conf.beat_schedule = {
     "collect": {
         "task": "app.tasks.collect.collect_vacancies",
-        "schedule": 60.0,
+        "schedule": 3600.0,
     },
 }
 
