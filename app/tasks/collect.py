@@ -12,6 +12,7 @@ from app.collectors.remotive import fetch_remotive_jobs
 
 logger = logging.getLogger(__name__)
 
+
 async def collect_data():
     engine = create_async_engine(settings.database_url)
     session_maker = async_sessionmaker(engine, expire_on_commit=False)
@@ -27,7 +28,7 @@ async def collect_data():
                 return 0
             raw_jobs = await fetch_remotive_jobs()
             logger.info("Получено записей: %d", len(raw_jobs))
-                
+
             normalized = []
             skipped = 0
             for job in raw_jobs:
@@ -46,6 +47,7 @@ async def collect_data():
 
     logger.info("Сохранено новых вакансий: %d", saved)
     return saved
+
 
 @celery_app.task(
     autoretry_for=(httpx.HTTPError,),

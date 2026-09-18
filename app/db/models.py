@@ -3,6 +3,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime
 
 from app.db.base import Base
+
+
 class Source(Base):
     __tablename__ = "sources"
 
@@ -11,8 +13,11 @@ class Source(Base):
     type: Mapped[str] = mapped_column(String(50))
     base_url: Mapped[str] = mapped_column(String(500))
     enabled: Mapped[bool] = mapped_column(default=True)
-    last_run_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    last_run_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
     vacancies: Mapped[list["Vacancy"]] = relationship(back_populates="source")
+
 
 class Vacancy(Base):
     __tablename__ = "vacancies"
@@ -27,5 +32,9 @@ class Vacancy(Base):
     url: Mapped[str] = mapped_column(String(1000))
     salary_min: Mapped[int | None] = mapped_column(nullable=True)
     content_hash: Mapped[str] = mapped_column(String(64), unique=True)
-    first_seen_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
-    last_seen_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    first_seen_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+    last_seen_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )

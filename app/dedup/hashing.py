@@ -2,6 +2,7 @@ import hashlib
 
 from app.schemas.vacancy import NormalizeVacancy
 
+
 def make_content_hash(vacancy: NormalizeVacancy) -> str:
     """Создает хэш для вакансии на основе ее содержимого."""
     company = vacancy.company.lower().strip()

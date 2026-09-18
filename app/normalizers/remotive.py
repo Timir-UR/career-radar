@@ -1,5 +1,3 @@
-
-
 from app.schemas.vacancy import NormalizeVacancy
 
 
