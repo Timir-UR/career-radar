@@ -1,7 +1,9 @@
-from sqlalchemy import ForeignKey, String, Boolean, DateTime, func
+from sqlalchemy import ForeignKey, String, DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime
-
+from sqlalchemy.dialects.postgresql import TSVECTOR
+from sqlalchemy import Index, Computed
+from app.core.constants import SEARCH_CONFIG
 from app.db.base import Base
 
 
@@ -21,6 +23,7 @@ class Source(Base):
 
 class Vacancy(Base):
     __tablename__ = "vacancies"
+    __table_args__ = (Index("ix_vacancies_search_vector", "search_vector",postgresql_using="gin"),)
 
     id: Mapped[int] = mapped_column(primary_key=True)
     source: Mapped["Source"] = relationship(back_populates="vacancies")
@@ -37,4 +40,10 @@ class Vacancy(Base):
     )
     last_seen_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
+    )
+    search_vector: Mapped[str | None] = mapped_column(TSVECTOR, Computed(f"to_tsvector('{SEARCH_CONFIG}', "
+            f"coalesce(title, '') || ' ' || coalesce(company, ''))",
+            persisted=True,
+        ),
+        deferred=True,
     )

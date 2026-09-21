@@ -1,10 +1,10 @@
-from sqlalchemy import select
+from sqlalchemy import select, func
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas.vacancy import VacancyRead
 from app.db.models import Vacancy
 from app.db.session import get_async_session
-
+from app.core.constants import SEARCH_CONFIG
 router = APIRouter(prefix="/vacancies", tags=["vacancies"])
 
 
@@ -33,5 +33,23 @@ async def get_vacancies(
         .offset(offset)
     )
 
+    results = await session.execute(stmt)
+    return results.scalars().all()
+
+@router.get("/search", response_model=list[VacancyRead])
+async def get_vacancies_search(
+    session: AsyncSession = Depends(get_async_session),
+    q: str = Query(min_length=2),
+    limit: int = Query(20, ge=1, le=100),
+    offset: int = Query(0, ge=0),
+):
+    stmt = select(Vacancy)
+    stmt = stmt.where(Vacancy.search_vector.op("@@")(func.websearch_to_tsquery(SEARCH_CONFIG, q)))
+    stmt = (
+        stmt
+        .order_by(Vacancy.first_seen_at.desc(), Vacancy.id.desc())
+        .limit(limit)
+        .offset(offset)
+    )
     results = await session.execute(stmt)
     return results.scalars().all()
