@@ -1,0 +1,32 @@
+{% for v in vacancies %}
+  <article class="job">
+    <div class="job-main">
+      <a class="job-title" href="{{ v.url }}" target="_blank" rel="noopener noreferrer">{{ v.title }}</a>
+      <span class="job-company">{{ v.company }}</span>
+    </div>
+    <div class="job-side">
+      {% if v.salary_min %}
+        <span class="salary">от {{ v.salary_min }}</span>
+      {% endif %}
+      {% if v.city %}
+        <span class="region" title="{{ v.city }}">{{ v.city }}</span>
+      {% endif %}
+      <time datetime="{{ v.first_seen_at.isoformat() }}">{{ v.first_seen_at.strftime("%d.%m.%Y") }}</time>
+    </div>
+  </article>
+{% else %}
+  {% if offset == 0 %}
+    <div class="empty">
+      <p>По этому запросу вакансий нет</p>
+      <p>Уберите один из фильтров или сократите запрос</p>
+    </div>
+  {% endif %}
+{% endfor %}
+
+{% if vacancies|length == limit %}
+  <button class="more"
+          hx-get="/partials/vacancies?offset={{ offset + limit }}"
+          hx-include="#filters"
+          hx-target="this"
+          hx-swap="outerHTML">Показать ещё</button>
+{% endif %}
