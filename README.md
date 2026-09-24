@@ -87,10 +87,8 @@ cp .env.example .env
 ```bash
 docker compose up -d db rabbitmq
 docker compose build
-docker compose run --rm api sh -c 'pip install "psycopg[binary]==3.3.4" && alembic upgrade head'
+docker compose run --rm api alembic upgrade head
 ```
-
-**Почему команда миграции содержит установку пакета:** сейчас в `requirements.txt` указан только `psycopg-binary`, а Alembic использует модуль `psycopg`. Команда устанавливает полный драйвер в одноразовый контейнер перед миграцией. Стандартная форма установки описана в [документации Psycopg](https://www.psycopg.org/psycopg3/docs/basic/install.html). Если зависимость в проекте будет заменена на `psycopg[binary]==3.3.4`, достаточно `docker compose run --rm api alembic upgrade head`.
 
 Миграции создают таблицы `sources` и `vacancies`, включённый источник `remotive`, вычисляемое поле полнотекстового поиска и GIN-индекс. При обычном старте контейнеров миграции автоматически не выполняются.
 
