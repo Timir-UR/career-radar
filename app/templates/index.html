@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" translate="no">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -79,6 +79,19 @@
       background: var(--signal);
       box-shadow: 0 0 0 4px var(--signal-soft);
       flex: none;
+    }
+
+    .lede a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .lede a:hover { color: var(--signal); }
+
+    .lede a:focus-visible {
+      outline: 2px solid var(--signal);
+      outline-offset: 2px;
     }
 
     /* ---------- форма ---------- */
@@ -251,6 +264,26 @@
 
     .more:hover { background: var(--signal-soft); }
 
+    /* ---------- подвал ---------- */
+
+    .credit {
+      margin: 20px 2px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .credit a {
+      color: var(--signal);
+      text-decoration: none;
+    }
+
+    .credit a:hover { text-decoration: underline; }
+
+    .credit a:focus-visible {
+      outline: 2px solid var(--signal);
+      outline-offset: 2px;
+    }
+
     /* ---------- мобильные ---------- */
 
     @media (max-width: 680px) {
@@ -266,7 +299,10 @@
   <div class="page">
     <header class="top">
       <h1>Career Radar</h1>
-      <p class="lede">Удалённые вакансии для Python-разработчиков, собираются автоматически</p>
+      <p class="lede">
+        Удалённые вакансии с упоминанием Python. Источник —
+        <a href="https://remotive.com" target="_blank" rel="noopener noreferrer">Remotive</a>
+      </p>
     </header>
 
     <form id="filters" class="filters" role="search"
@@ -299,6 +335,12 @@
     <main id="results" class="list">
       {% include "_vacancies.html" %}
     </main>
+
+    <p class="credit">
+      Вакансии предоставлены
+      <a href="https://remotive.com" target="_blank" rel="noopener noreferrer">Remotive</a>.
+      Полный текст объявления и отклик — на сайте источника.
+    </p>
   </div>
 </body>
 </html>
