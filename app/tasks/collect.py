@@ -1,14 +1,16 @@
 import asyncio
-from sqlalchemy import func
-from app.core.config import settings
-from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
-import httpx
 import logging
+
+import httpx
+from pydantic import ValidationError
+from sqlalchemy import func
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+
+from app.collectors.remotive import fetch_remotive_jobs
+from app.core.config import settings
 from app.db.storage import get_source, save_vacancy
 from app.normalizers.remotive import normalize_remotive
-from pydantic import ValidationError
 from app.tasks.celery_app import celery_app
-from app.collectors.remotive import fetch_remotive_jobs
 
 logger = logging.getLogger(__name__)
 

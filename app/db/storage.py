@@ -2,7 +2,7 @@ from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.db.models import Vacancy, Source
+from app.db.models import Source, Vacancy
 from app.dedup.hashing import make_content_hash
 from app.schemas.vacancy import NormalizeVacancy
 
