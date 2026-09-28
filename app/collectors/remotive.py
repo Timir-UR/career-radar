@@ -10,15 +10,4 @@ async def fetch_remotive_jobs() -> list[dict]:
 
         jobs = response.json().get("jobs", [])
 
-        python_jobs = []
-
-        for job in jobs:
-            title = job.get("title", "")
-            description = job.get("description", "")
-
-            text = f"{title} {description}".lower()
-
-            if "python" in text:
-                python_jobs.append(job)
-
-        return python_jobs[:50]
+        return filter_python_jobs(jobs)[:50]
