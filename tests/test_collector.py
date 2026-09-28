@@ -37,7 +37,8 @@ def test_python_in_out_all_matches():
     assert filter_python_jobs(jobs) == []
 
 def test_python_in_same_jobs_matches():
-    jobs = [make_job(title="Pythoner"), make_job(title="Senior"), make_job(title="Senior Python Developer")]
+    jobs = [make_job(title="Pythoner"), make_job(title="Senior"),
+            make_job(title="Senior Python Developer")]
     result = filter_python_jobs(jobs)
 
 
