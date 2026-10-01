@@ -8,5 +8,7 @@ def normalize_remotive(raw: dict) -> NormalizeVacancy:
         company=raw["company_name"],
         city=raw.get("candidate_required_location"),
         url=raw["url"],
-        salary_min=raw.get("salary_min"),
+        # Remotive присылает зарплату строкой («$50,000 - $70,000»), числа нет.
+        # Разбор — отдельная задача, см. бэклог.
+        salary_min=None,
     )

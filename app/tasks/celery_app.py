@@ -13,6 +13,10 @@ celery_app.conf.beat_schedule = {
         "task": "app.tasks.collect.collect_vacancies",
         "schedule": 21600.0,
     },
+    "collect-superjob": {
+        "task": "app.tasks.collect.collect_superjob",
+        "schedule": 3600.0,
+    },
 }
 
 celery_app.conf.timezone = "UTC"

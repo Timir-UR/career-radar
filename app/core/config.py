@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     POSTGRES_PORT: int = 5432
     POSTGRES_HOST: str
     RABBITMQ_URL: str
+    SUPERJOB_SECRET_KEY: str
 
     @property
     def database_url(self) -> str:
