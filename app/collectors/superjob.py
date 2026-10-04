@@ -14,7 +14,13 @@ async def fetch_superjob_jobs() -> list[dict]:
         response = await client.get(
             SUPERJOB_URL,
             headers={"X-Api-App-Id": settings.SUPERJOB_SECRET_KEY},
-            params={"keyword": "python", "count": 50, "page": 0},
+            params={
+                "keyword": "python",
+                "count": 50,
+                "page": 0,
+                "order_field": "date",
+                "order_direction": "desc",
+            },
         )
         response.raise_for_status()
         payload = response.json()
