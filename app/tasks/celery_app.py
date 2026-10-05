@@ -10,7 +10,7 @@ celery_app = Celery(
 
 celery_app.conf.beat_schedule = {
     "collect": {
-        "task": "app.tasks.collect.collect_vacancies",
+        "task": "app.tasks.collect.collect_remotive",
         "schedule": 21600.0,
     },
     "collect-superjob": {
